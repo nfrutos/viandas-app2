@@ -1,7 +1,12 @@
-import type { NextConfig } from "next";
+/** @type {import('next').NextConfig} */
+const nextConfig = {
+  experimental: {
+    serverActions: {}, // <- debe ser un objeto (aunque esté vacío)
+  }, // <-- agrega esta coma
 
-const nextConfig: NextConfig = {
-  /* config options here */
+  compiler: {
+    emotion: true,
+  },
 };
 
-export default nextConfig;
+module.exports = nextConfig;

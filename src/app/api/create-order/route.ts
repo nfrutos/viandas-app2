@@ -36,10 +36,11 @@ export async function POST(req: NextRequest) {
             body: {
                 items,
                 back_urls: {
-                    success: 'https://viandas-app.vercel.app/orden-confirmada', // <-- actualizá con tu dominio real
-                    failure: 'https://viandas-app.vercel.app/checkout?status=failure',
-                    pending: 'https://viandas-app.vercel.app/checkout?status=pending',
+                    success: 'https://viandas-app2-5nmm-htq5ovxts-nahuels-projects-12608931.vercel.app/orden-confirmada',
+                    failure: 'https://viandas-app2-5nmm-htq5ovxts-nahuels-projects-12608931.vercel.app/checkout?status=failure',
+                    pending: 'https://viandas-app2-5nmm-htq5ovxts-nahuels-projects-12608931.vercel.app/checkout?status=pending',
                 },
+
                 auto_return: 'approved',
             },
         });

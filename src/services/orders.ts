@@ -9,7 +9,12 @@ type CartItem = {
 export const saveOrder = async (data: {
     status: string;
     total: number;
-    items: CartItem[];
+    items: {
+        title: string;
+        price: number;
+        quantity: number;
+    }[];
+
     name: string;
     phone: string;
 }) => {

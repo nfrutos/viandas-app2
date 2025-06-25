@@ -11,8 +11,9 @@ export default function OrdenConfirmadaPage() {
     const { clearCart } = useCart();
 
     useEffect(() => {
-        clearCart(); // Limpiar el carrito después de confirmar
-    }, []);
+        clearCart();
+    }, [clearCart]);
+
 
     return (
         <Layout>

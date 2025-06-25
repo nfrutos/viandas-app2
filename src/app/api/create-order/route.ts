@@ -15,15 +15,25 @@ export async function POST(req: NextRequest) {
 
     console.log('[create-order] Recibido:', { cart, name, phone });
 
-    const items = cart.map((item) => ({
-        id: item.title, // Usa un identificador único real si es posible
+    type CartItem = {
+        title: string;
+        price: number;
+        quantity: number;
+    };
+
+    const items = cart.map((item: CartItem, idx: number) => ({
+        id: `${idx + 1}`, // id como string, requerido por MercadoPago
         title: item.title,
         quantity: item.quantity,
         unit_price: Number(item.price),
         currency_id: 'ARS',
     }));
 
-    const total = cart.reduce((acc, item) => acc + item.price * item.quantity, 0);
+    const total = cart.reduce(
+        (acc: number, item: CartItem) => acc + item.price * item.quantity,
+        0
+    );
+
 
     try {
         const preferenceClient = new Preference(mercadopago);

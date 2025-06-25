@@ -10,9 +10,9 @@ import {
   Typography,
 } from '@mui/material';
 import { useRouter, useSearchParams } from 'next/navigation';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, Suspense } from 'react';
 
-export default function CheckoutPage() {
+function CheckoutContent() {
   const { cart } = useCart();
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -46,7 +46,7 @@ export default function CheckoutPage() {
   };
 
   return (
-    <Layout>
+    <>
       <Typography variant="h4" gutterBottom>Finalizar compra</Typography>
 
       {cart.length === 0 ? (
@@ -75,6 +75,16 @@ export default function CheckoutPage() {
           </Button>
         </Box>
       )}
+    </>
+  );
+}
+
+export default function CheckoutPage() {
+  return (
+    <Layout>
+      <Suspense fallback={<CircularProgress />}>
+        <CheckoutContent />
+      </Suspense>
     </Layout>
   );
 }

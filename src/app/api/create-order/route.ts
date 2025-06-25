@@ -3,23 +3,27 @@ import mercadopago from '@/lib/mercadopago';
 import { Preference } from 'mercadopago';
 import { saveOrder } from '@/services/orders';
 
+type CartItem = {
+    title: string;
+    quantity: number;
+    price: number;
+};
+
 export async function POST(req: NextRequest) {
     const body = await req.json();
-    const { cart, name, phone } = body;
+    const { cart, name, phone }: { cart: CartItem[]; name: string; phone: string } = body;
 
     console.log('[create-order] Recibido:', { cart, name, phone });
 
-    const items = cart.map((item: any) => ({
+    const items = cart.map((item) => ({
+        id: item.title, // Usa un identificador único real si es posible
         title: item.title,
         quantity: item.quantity,
         unit_price: Number(item.price),
         currency_id: 'ARS',
     }));
 
-    const total = cart.reduce(
-        (acc: number, item: any) => acc + item.price * item.quantity,
-        0
-    );
+    const total = cart.reduce((acc, item) => acc + item.price * item.quantity, 0);
 
     try {
         const preferenceClient = new Preference(mercadopago);
@@ -27,12 +31,12 @@ export async function POST(req: NextRequest) {
             body: {
                 items,
                 back_urls: {
-                    success: 'http://localhost:3000/checkout?status=success',
-                    failure: 'http://localhost:3000/checkout?status=failure',
-                    pending: 'http://localhost:3000/checkout?status=pending',
+                    success: 'https://viandas-app.vercel.app/orden-confirmada', // <-- actualizá con tu dominio real
+                    failure: 'https://viandas-app.vercel.app/checkout?status=failure',
+                    pending: 'https://viandas-app.vercel.app/checkout?status=pending',
                 },
                 auto_return: 'approved',
-            }
+            },
         });
 
         await saveOrder({

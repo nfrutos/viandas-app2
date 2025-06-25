@@ -29,6 +29,7 @@ export async function POST(req: NextRequest) {
     );
 
 
+
     try {
         const preferenceClient = new Preference(mercadopago);
         const preference = await preferenceClient.create({

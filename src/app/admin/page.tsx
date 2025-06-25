@@ -25,6 +25,7 @@ type PedidoItem = {
     price: number;
 };
 
+
 type Order = Awaited<ReturnType<typeof getOrders>>[number] & {
     items: PedidoItem[];
     name: string;
@@ -121,7 +122,9 @@ export default function AdminPage() {
                                     </TableCell>
                                     <TableCell>
                                         <ul style={{ margin: 0, paddingLeft: '1rem' }}>
-                                            {order.items.map((item, index) => (
+                                            {(order.items as PedidoItem[]).map((item, index) => (
+
+
                                                 <li key={index}>
                                                     {item.title} x{item.quantity}
                                                 </li>

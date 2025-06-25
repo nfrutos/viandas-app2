@@ -34,7 +34,8 @@ export default function MenuPage() {
 			</Typography>
 			<Grid container spacing={3}>
 				{mockViandas.map((item, index) => (
-					// @ts-expect-error: MUI Grid props type mismatch workaround
+					// @ts-expect-error: Grid props type mismatch workaround
+
 					<Grid key={index} item xs={12} sm={6} md={4}>
 
 						<MenuItemCard {...item} />

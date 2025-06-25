@@ -5,8 +5,8 @@ import { saveOrder } from '@/services/orders';
 
 type CartItem = {
     title: string;
-    quantity: number;
     price: number;
+    quantity: number;
 };
 
 export async function POST(req: NextRequest) {
@@ -15,14 +15,8 @@ export async function POST(req: NextRequest) {
 
     console.log('[create-order] Recibido:', { cart, name, phone });
 
-    type CartItem = {
-        title: string;
-        price: number;
-        quantity: number;
-    };
-
     const items = cart.map((item: CartItem, idx: number) => ({
-        id: `${idx + 1}`, // id como string, requerido por MercadoPago
+        id: `${idx + 1}`,
         title: item.title,
         quantity: item.quantity,
         unit_price: Number(item.price),

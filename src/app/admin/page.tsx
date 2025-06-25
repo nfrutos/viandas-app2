@@ -19,7 +19,17 @@ import {
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 
-type Order = Awaited<ReturnType<typeof getOrders>>[number];
+type PedidoItem = {
+    title: string;
+    quantity: number;
+    price: number;
+};
+
+type Order = Awaited<ReturnType<typeof getOrders>>[number] & {
+    items: PedidoItem[];
+    name: string;
+    phone: string;
+};
 
 const estados = ['pending', 'preparado', 'entregado', 'cancelado'];
 
@@ -28,7 +38,6 @@ export default function AdminPage() {
     const [orders, setOrders] = useState<Order[]>([]);
     const [isAllowed, setIsAllowed] = useState(false);
 
-    // Verificar autenticación
     useEffect(() => {
         const token = localStorage.getItem('admin_token');
         if (token === 'admin-session-ok') {
@@ -64,8 +73,6 @@ export default function AdminPage() {
 
     if (!isAllowed) return null;
 
-
-
     return (
         <Layout>
             <Box display="flex" justifyContent="space-between" alignItems="center" mb={2}>
@@ -83,6 +90,8 @@ export default function AdminPage() {
                         <TableHead>
                             <TableRow>
                                 <TableCell>Fecha</TableCell>
+                                <TableCell>Cliente</TableCell>
+                                <TableCell>Teléfono</TableCell>
                                 <TableCell>Total</TableCell>
                                 <TableCell>Estado</TableCell>
                                 <TableCell>Viandas</TableCell>
@@ -91,9 +100,9 @@ export default function AdminPage() {
                         <TableBody>
                             {orders.map((order) => (
                                 <TableRow key={order.id}>
-                                    <TableCell>
-                                        {new Date(order.createdAt).toLocaleString()}
-                                    </TableCell>
+                                    <TableCell>{new Date(order.createdAt).toLocaleString()}</TableCell>
+                                    <TableCell>{order.name}</TableCell>
+                                    <TableCell>{order.phone}</TableCell>
                                     <TableCell>${order.total.toFixed(2)}</TableCell>
                                     <TableCell>
                                         <Select
@@ -112,20 +121,11 @@ export default function AdminPage() {
                                     </TableCell>
                                     <TableCell>
                                         <ul style={{ margin: 0, paddingLeft: '1rem' }}>
-                                            {Array.isArray(order.items) ? (
-                                                <ul style={{ margin: 0, paddingLeft: '1rem' }}>
-                                                    {order.items.map((item: any, index: number) => (
-                                                        <li key={index}>
-                                                            {item.title} x{item.quantity}
-                                                        </li>
-                                                    ))}
-                                                </ul>
-                                            ) : (
-                                                <Typography variant="body2" color="text.secondary">
-                                                    Sin datos
-                                                </Typography>
-                                            )}
-
+                                            {order.items.map((item, index) => (
+                                                <li key={index}>
+                                                    {item.title} x{item.quantity}
+                                                </li>
+                                            ))}
                                         </ul>
                                     </TableCell>
                                 </TableRow>

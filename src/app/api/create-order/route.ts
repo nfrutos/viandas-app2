@@ -14,6 +14,7 @@ export async function POST(req: NextRequest) {
     const { cart, name, phone }: { cart: CartItem[]; name: string; phone: string } = body;
 
     console.log('[create-order] Recibido:', { cart, name, phone });
+    console.log("Token en servidor:", process.env.MP_ACCESS_TOKEN);
 
     const items = cart.map((item: CartItem, idx: number) => ({
         id: `${idx + 1}`,

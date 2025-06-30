@@ -3,7 +3,7 @@ generator client {
 }
 
 datasource db {
-  provider = "sqlite"
+  provider = "postgresql"
   url      = env("DATABASE_URL")
 }
 
@@ -12,8 +12,8 @@ model Order {
   createdAt DateTime @default(now())
   status    String
   total     Float
-  name      String    // ✅ nuevo
-  phone     String    // ✅ nuevo
+  name      String
+  phone     String
   items     Json
 }
 
@@ -22,4 +22,3 @@ model Admin {
   email    String   @unique
   password String
 }
-
